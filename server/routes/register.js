@@ -1,0 +1,31 @@
+const express = require("express");
+const bcrypt = require("bcrypt");
+const Usuario = require("../../apirest/models/usuario.model");
+const app = express();
+
+app.post("/register", function (req, res) {
+  let body = req.body;
+  let { nombre, apellido, email, password, dni, fechaNacimiento } = body;
+  let usuario = new Usuario({
+    nombre,
+    apellido,
+    email,
+    password: bcrypt.hashSync(password, 10),
+    dni,
+    fechaNacimiento,
+  });
+
+  usuario.save((err, usuarioDB) => {
+    if (err) {
+      return res.status(400).json({
+        ok: false,
+        err,
+      });
+    }
+    res.json({
+      ok: true,
+      usuario: usuarioDB,
+    });
+  });
+});
+module.exports = app;
