@@ -6,6 +6,7 @@ const Usuario = require("../../apirest/models/usuario.model");
 module.exports = {
   login,
   getAll,
+  getEmail,
   create,
   update,
   delete: _delete,
@@ -14,7 +15,6 @@ module.exports = {
 async function login(req, res, next) {
   let email = req.email;
   let password = req.password;
-  console.log(email);
   let usuarioDB = await Usuario.findOne({ email: email });
 
   // Verifica que exista un usuario con el mail escritao por el usuario.
@@ -25,7 +25,6 @@ async function login(req, res, next) {
   // Valida que la contraseña escrita por el usuario, sea la almacenada en la db
   if (!bcrypt.compareSync(password, usuarioDB.password)) {
     throw "Contraseña incorrecta";
-
   }
 
   // Genera el token de autenticación
@@ -45,45 +44,40 @@ async function getAll() {
   return await Usuario.find();
 }
 
-async function create(req) {
-  if (usuarioDB = await Usuario.findOne({ email: req.email })){
-    throw "Usuario " + req.email + " ya existe";
-  }
+async function getEmail(email) {
+  let usuarioDB = await Usuario.find({ email: email });
+  // validate
+  if (!usuarioDB) throw "Usuario no encontrado";
 
+  return await usuarioDB;
+}
+
+async function create(req) {
   const usuario = new Usuario(req);
 
   // Generar hash password
   if (req.password) {
     usuario.password = bcrypt.hashSync(req.password, 10);
   }
-
   // Alta de usuario
   await usuario.save();
 }
 
-async function update(id, usuarioParam) {
-  const usuario = await Usuario.find(id);
+async function update(email, req) {
+  let usuarioModif = new Usuario(await Usuario.findOne({ email: email }));
 
-  // validate
-  if (!usuario) throw "Usuario not found";
-  if (
-    usuario.username !== usuarioParam.username &&
-    (await Usuario.findOne({ username: usuarioParam.username }))
-  ) {
-    throw 'Usuarioname "' + usuarioParam.username + '" is already taken';
-  }
+  if (!usuarioModif) throw "Usuario no encontrado";
 
-  // hash password if it was entered
-  if (usuarioParam.password) {
-    usuarioParam.hash = bcrypt.hashSync(usuarioParam.password, 10);
-  }
+  usuarioModif.nombre = req.nombre;
+  usuarioModif.apellido = req.apellido;
+  usuarioModif.dni = req.dni;
+  usuarioModif.fechaNacimiento = req.fechaNacimiento;
+  usuarioModif.password = bcrypt.hashSync(req.password, 10);
 
-  // copy usuarioParam properties to usuario
-  Object.assign(usuario, usuarioParam);
-
-  await usuario.save();
+  await usuarioModif.save();
+  // await usuarioModif.updateOne();
 }
 
-async function _delete(id) {
-  await Usuario.findByIdAndRemove(id);
+async function _delete(email) {
+  await Usuario.deleteOne({ email: email });
 }

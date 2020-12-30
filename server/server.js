@@ -12,10 +12,19 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Configuracion global de rutas
-// app.use(require('./routes/index'));
 app.use(
-  "/api/v1/usuarios",
+  "/apirest/usuarios",
   require("../apirest/controllers/usuario.controller")
+);
+
+app.use(
+  "/apirest/movimientos",
+  require("../apirest/controllers/movimiento.controller")
+);
+
+app.use(
+  "/apirest/cuentas",
+  require("../apirest/controllers/cuenta.controller")
 );
 
 // ===========================

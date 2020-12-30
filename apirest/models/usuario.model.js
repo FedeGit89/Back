@@ -21,7 +21,7 @@ let usuarioSchema = new Schema({
   password: {
     type: String,
     required: [true, "La contraseña es obligatoria"],
-  },
+  },  
   dni: {
     type: String,
     required: [true, "El dni es necesario"],
