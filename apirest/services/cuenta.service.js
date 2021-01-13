@@ -24,23 +24,16 @@ async function create(req) {
 }
 
 async function update(email, opcion, importe) { 
-  console.log(email);
-  console.log(opcion);
-  console.log(importe);
   let cuentaModif = new Cuenta(await Cuenta.findOne({ email: email }));
 
   if (!cuentaModif) throw "Cuenta no encontrado";
 
   let importeNum = parseFloat(importe);
-  console.log(opcion);
   if (opcion == 'D') {
-    console.log("Resto");
     cuentaModif.saldo = cuentaModif.saldo - importeNum;
   } else {
-    console.log("Sumo");
     cuentaModif.saldo = cuentaModif.saldo + importeNum;
   }
-  console.log(cuentaModif.saldo);
   cuentaModif.email = email;
   
 

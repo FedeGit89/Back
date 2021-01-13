@@ -12,7 +12,7 @@ module.exports = {
   delete: _delete,
 };
 
-async function login(req, res, next) {
+async function login(req) {
   let email = req.email;
   let password = req.password;
   let usuarioDB = await Usuario.findOne({ email: email });
@@ -42,12 +42,15 @@ async function login(req, res, next) {
 
 async function getAll() {
   return await Usuario.find();
-}
+  }
 
-async function getEmail(email) {
-  let usuarioDB = await Usuario.find({ email: email });
+async function getEmail(req) {
+  let email = req.email;
+  let usuarioDB = await Usuario.findOne({ email: email });
   // validate
-  if (!usuarioDB) throw "Usuario no encontrado";
+  if (!usuarioDB) {
+    throw "Usuario para transferir no encontrado";
+  }
 
   return await usuarioDB;
 }

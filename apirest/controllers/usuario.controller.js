@@ -35,9 +35,9 @@ function getAll(req, res, next) {
 
 function getEmail(req, res, next) {
   usuarioService
-    .getEmail(req.params.email)
+    .getEmail(req.body)
     .then((Usuario) => res.json(Usuario))
-    .catch((err) => next(err));
+    .catch((err) => res.json({ mensaje: err }));
 }
 
 function update(req, res, next) {
