@@ -27,7 +27,7 @@ let usuarioSchema = new Schema({
     required: [true, "El dni es necesario"],
   },
   fechaNacimiento: {
-    type: Date,
+    type: String,
     required: [true, "La fecha de nacimiento es necesaria"],
   },
   fechaAuditoria: {

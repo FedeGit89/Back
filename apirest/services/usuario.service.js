@@ -5,11 +5,9 @@ const Usuario = require("../../apirest/models/usuario.model");
 
 module.exports = {
   login,
-  getAll,
   getEmail,
   create,
   update,
-  delete: _delete,
 };
 
 async function login(req) {
@@ -40,17 +38,10 @@ async function login(req) {
   return await usuarioDB;
 }
 
-async function getAll() {
-  return await Usuario.find();
-  }
-
-async function getEmail(req) {
-  let email = req.email;
+async function getEmail(email) {
   let usuarioDB = await Usuario.findOne({ email: email });
   // validate
-  if (!usuarioDB) {
-    throw "Usuario para transferir no encontrado";
-  }
+  if (!usuarioDB) throw "Usuario para transferir no encontrado";
 
   return await usuarioDB;
 }
@@ -78,9 +69,4 @@ async function update(email, req) {
   usuarioModif.password = bcrypt.hashSync(req.password, 10);
 
   await usuarioModif.save();
-  // await usuarioModif.updateOne();
-}
-
-async function _delete(email) {
-  await Usuario.deleteOne({ email: email });
 }

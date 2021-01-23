@@ -4,12 +4,12 @@ const Cuenta = require("../models/cuenta.model");
 module.exports = {
   getEmail,
   create,
-  update
+  update,
+  mascara,
 };
 
-
 async function getEmail(email) {
-  let cuentaDB = await Cuenta.find({ email: email });
+  let cuentaDB = await Cuenta.findOne({ email: email });
   // validate
   if (!cuentaDB) throw "Cuenta no encontrado";
 
@@ -23,20 +23,24 @@ async function create(req) {
   await cuenta.save();
 }
 
-async function update(email, opcion, importe) { 
+async function update(email, opcion, importe) {
   let cuentaModif = new Cuenta(await Cuenta.findOne({ email: email }));
 
   if (!cuentaModif) throw "Cuenta no encontrado";
 
   let importeNum = parseFloat(importe);
-  if (opcion == 'D') {
+  if (opcion == "D") {
     cuentaModif.saldo = cuentaModif.saldo - importeNum;
   } else {
     cuentaModif.saldo = cuentaModif.saldo + importeNum;
   }
   cuentaModif.email = email;
-  
 
   await cuentaModif.save();
 }
 
+async function mascara(req) {
+  let cuentaDB = "";
+
+  return await cuentaDB;
+}

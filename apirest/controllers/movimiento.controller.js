@@ -4,8 +4,9 @@ const movimientoService = require("../services/movimiento.service");
 
 // router
 router.post('/', grabar);
-router.get('/', getAll);
-router.get('/:email', getEmailDeb);
+router.get('/:email', getEmail);
+
+
 
 module.exports = router;
 
@@ -16,16 +17,9 @@ function grabar(req, res, next) {
     .catch((err) => res.json({ mensaje: err }));
 }
 
-function getAll(req, res, next) {
+function getEmail(req, res, next) {
   movimientoService
-    .getAll()
-    .then((Movimiento) => res.json(Movimiento))
-    .catch((err) => next(err));
-}
-
-function getEmailDeb(req, res, next) {
-  movimientoService
-    .getEmailDeb(req.params.email)
+    .getEmail(req.params.email)
     .then((Usuario) => res.json(Usuario))
     .catch((err) => next(err));
 }
