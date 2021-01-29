@@ -25,16 +25,16 @@ async function login(req) {
     throw "Contraseña incorrecta";
   }
 
-  // Genera el token de autenticación
-  let token = jwt.sign(
-    {
-      usuario: usuarioDB,
-    },
-    process.env.SEED_AUTENTICACION,
-    {
-      expiresIn: process.env.CADUCIDAD_TOKEN,
-    }
-  );
+  // // Genera el token de autenticación
+  // let token = jwt.sign(
+  //   {
+  //     usuario: usuarioDB,
+  //   },
+  //   process.env.SEED_AUTENTICACION,
+  //   {
+  //     expiresIn: process.env.CADUCIDAD_TOKEN,
+  //   }
+  // );
   return await usuarioDB;
 }
 

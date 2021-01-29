@@ -6,7 +6,6 @@ const cuentaService = require("../services/cuenta.service");
 router.post('/', grabar);
 router.get('/:email', getEmail);
 router.put('/:email&:opcion&:importe', update);
-router.get('/', mascara);
 
 module.exports = router;
 
@@ -27,13 +26,6 @@ function getEmail(req, res) {
 function update(req, res, next) {
   cuentaService
     .update(req.params.email, req.params.opcion, req.params.importe)
-    .then(() => res.json({}))
-    .catch((err) => next(err));
-}
-
-function mascara(req, res, next) {
-  cuentaService
-    .mascara(req)
     .then(() => res.json({}))
     .catch((err) => next(err));
 }

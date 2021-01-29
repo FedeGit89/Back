@@ -4,8 +4,7 @@ const Cuenta = require("../models/cuenta.model");
 module.exports = {
   getEmail,
   create,
-  update,
-  mascara,
+  update
 };
 
 async function getEmail(email) {
@@ -37,10 +36,4 @@ async function update(email, opcion, importe) {
   cuentaModif.email = email;
 
   await cuentaModif.save();
-}
-
-async function mascara(req) {
-  let cuentaDB = "";
-
-  return await cuentaDB;
 }
